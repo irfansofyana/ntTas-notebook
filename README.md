@@ -1,5 +1,5 @@
 # ntTas-notebook
-This repo contains ntTas cheatsheet for ACM ICPC. 
+This reposiotry contain ntTas cheatsheet for ACM ICPC. 
 
 ntTas Member:
 1. Irfan Sofyana Putra
