@@ -1,33 +1,21 @@
-/**
-* Description: Shortest Path w/ negative edge weights
-* Can be useful with linear programming
-* Constraints of the form x_i-x_j<k
-* Source: Own
-* Verification: https://open.kattis.com/problems/shortestpath3
-*/
+vi dist(V, INF); dist[s] = 0;
 
-template<int SZ> struct BellmanFord {
-	int n;
-	bool bad[SZ];
-	vector<pair<pi,int>> edge;
+for (int i = 0; i < V - 1; i++) // relax all E edges V-1 times
+	for (int u = 0; u < V; u++)	// these two loops = O(E), overall O(VE)
+		for (int j = 0; j < (int)AdjList[u].size(); j++) {
+			ii v = AdjList[u][j];
+			// record SP spanning here if needed
+			dist[v.first] = min(dist[v.first], dist[u] + v.second);
+			// relax
+		}
 
-	ll dist[SZ];
-	
-	ll query(int x){
-		if (bad[x]) return -INF;
-		return dist[x];
+// after running the O(VE) Bellman Ford’s algorithm shown above
+bool hasNegativeCycle = false;
+for (int u = 0; u < V; u++) // one more pass to check
+	for (int j = 0; j < (int)AdjList[u].size(); j++) {
+		ii v = AdjList[u][j];
+		if (dist[v.first] > dist[u] + v.second) // if this is still possible
+		hasNegativeCycle = true;
+		// then negative cycle exists!
 	}
-
-	void gen(int s) {
-		F0R(i,n) dist[i] = INF, bad[i] = 0;
-		dist[s] = 0;
-		F0R(i,n) for (auto a: edge)
-			if (dist[a.f.f] < INF) dist[a.f.s] = 
-			 min(dist[a.f.s], dist[a.f.f]+a.s);
-		for (auto a: edge) if (dist[a.f.f] < INF)
-			if (dist[a.f.s] > dist[a.f.f]+a.s)
-				bad[a.f.s] = 1;
-		F0R(i,n) for (auto a: edge)
-			if (bad[a.f.f]) bad[a.f.s] = 1;
-	}
-};
+printf("Negative Cycle Exist? %s\n", hasNegativeCycle ? "Yes" : "No");

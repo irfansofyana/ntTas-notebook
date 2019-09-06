@@ -1,35 +1,43 @@
-/**
-* Source: Wikipedia
-* Description: generates SCC in topological order
-* Verification: POI 8 peaceful commission
-*/
+vector < vector<int> > g, gr;
+vector<bool> used;
+vector<int> order, component;
 
-template<int SZ> struct scc {
-	vi adj[SZ], radj[SZ], todo, allComp;
-	int N, comp[SZ];
-	bitset<SZ> visit;
+void dfs1 (int v) {
+	used[v] = true;
+	for (size_t i=0; i<g[v].size(); ++i)
+		if (!used[ g[v][i] ])
+			dfs1 (g[v][i]);
+	order.push_back (v);
+}
 
-	void dfs(int v) {
-		visit[v] = 1;
-		for (int w: adj[v]) if (!visit[w]) dfs(w);
-		todo.pb(v);
+void dfs2 (int v) {
+	used[v] = true;
+	component.push_back (v);
+	for (size_t i=0; i<gr[v].size(); ++i)
+		if (!used[ gr[v][i] ])
+			dfs2 (gr[v][i]);
+}
+
+int main() {
+	int n;
+	// ... reading n ...
+	for (;;) {
+		int a, b;
+		// ... reading next edge (a,b) ...
+		g[a].push_back (b);
+		gr[b].push_back (a);
 	}
-
-	void dfs2(int v, int val) {
-		comp[v] = val;
-		for (int w: radj[v]) if (comp[w] == -1)
-		dfs2(w,val);
+	used.assign (n, false);
+	for (int i=0; i<n; ++i)
+		if (!used[i])
+			dfs1 (i);
+	used.assign (n, false);
+	for (int i=0; i<n; ++i) {
+		int v = order[n-1-i];
+		if (!used[v]) {
+			dfs2 (v);
+			// ... printing next component ...
+			component.clear();
+		}
 	}
-
-	void addEdge(int a, int b) { 
-		adj[a].pb(b), radj[b].pb(a); 
-	}
-
-	void genSCC() {
-		F0R(i,N) comp[i] = -1, visit[i] = 0;
-		F0R(i,N) if (!visit[i]) dfs(i);
-		reverse(all(todo)); // toposort
-		for (int i: todo) if (comp[i] == -1)
-		dfs2(i,i), allComp.pb(i);
-	}
-};
+}
