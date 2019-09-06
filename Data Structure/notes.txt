@@ -1,0 +1,19 @@
+lazy prop bimo 
+done    BIT hapus 
+done    komparator STL (map, set, dkk) pake functor
+done    segment tree hapus 
+baca dp convex hull 
+area poligon (?)
+done orientation buang
+done masukin convex hull compfest
+done length union ga perlu
+done dot product cross gabungin
+done line intersection buang
+big int coba dulu
+done crt refactor 
+done a ampas hapus aja
+done extended euclid hapus
+FFT baca
+done ternary hapus aja
+done setup harus yang dihapus (bq template)
+shell script

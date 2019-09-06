@@ -1,5 +1,5 @@
 /** 
-* Description :Test Primality up to n in O(nlog(logn))
+* Description :Test Primality up to n in O(log(logn))
 */
 
 const int SZ = 1e7;
