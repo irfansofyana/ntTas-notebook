@@ -5,25 +5,33 @@
 * Verification: ?
 */
 
-template<class T, int SZ> struct BITrange {
-	
-	BIT<T,SZ> bit[2]; // sums piecewise linear functions
-	
-	void upd(int hi, T val) {
-		bit[1].upd(1,val), bit[1].upd(hi+1,-val);
-		bit[0].upd(hi+1,hi*val);
-	}
+struct FenwickTree {
+    vector<int> bit;  // binary indexed tree
+    int n;
 
-	void upd(int lo, int hi, T val) { 
-		upd(lo-1,-val);
-		upd(hi,val); 
-	}
+    FenwickTree(int n) {
+        this->n = n;
+        bit.assign(n, 0);
+    }
 
-	T query(int x) { 
-		return bit[1].query(x)*x+bit[0].query(x); 
-	}
+    FenwickTree(vector<int> a) : FenwickTree(a.size()) {
+        for (size_t i = 0; i < a.size(); i++)
+            add(i, a[i]);
+    }
 
-	T query(int x, int y) { 
-		return query(y)-query(x-1);
-	}
+    int sum(int r) {
+        int ret = 0;
+        for (; r >= 0; r = (r & (r + 1)) - 1)
+            ret += bit[r];
+        return ret;
+    }
+
+    int sum(int l, int r) {
+        return sum(r) - sum(l - 1);
+    }
+
+    void add(int idx, int delta) {
+        for (; idx < n; idx = idx | (idx + 1))
+            bit[idx] += delta;
+    }
 };
